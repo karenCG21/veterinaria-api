@@ -4,7 +4,7 @@ import pg from 'pg';
 
 const { Pool } = pg;
 const app = express();
-const pool = new Pool({
+const pool = new Pool(process.env.DATABASE_URL ? { connectionString: process.env.DATABASE_URL } : {
   host: process.env.DB_HOST || 'localhost',
   port: Number(process.env.DB_PORT || 5433),
   user: process.env.POSTGRES_USER || 'postgres',
@@ -119,8 +119,8 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
-const port = Number(process.env.API_PORT || 3000);
-const server = app.listen(port, () => console.log(`API de veterinaria en http://localhost:${port}`));
+const port = Number(process.env.PORT || process.env.API_PORT || 3000);
+const server = app.listen(port, '0.0.0.0', () => console.log('API de veterinaria escuchando en puerto ' + port));
 
 const shutdown = () => {
   server.close(() => pool.end().finally(() => process.exit(0)));
