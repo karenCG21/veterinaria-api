@@ -38,6 +38,7 @@ La API escucha en `http://localhost:3000` y PostgreSQL en `localhost:5433`. El e
 | GET | `/api/health` | Estado de la API y conexión a PostgreSQL |
 | GET / POST | `/api/owners` | Listar o registrar tutores |
 | GET / POST | `/api/pets` | Listar o registrar mascotas; acepta `?owner_id=1` |
+| GET | `/api/pets/:id` | Consultar una mascota por ID; por ejemplo `/api/pets/1` |
 | GET | `/api/veterinarians` | Listar veterinarios activos |
 | GET / POST | `/api/appointments` | Listar o agendar citas; acepta `?date=YYYY-MM-DD` |
 | PATCH | `/api/appointments/:id/status` | Cambiar estado de una cita |
@@ -50,6 +51,7 @@ Especies: `perro`, `gato`, `ave`, `reptil`, `otro`.
 ```powershell
 Invoke-RestMethod http://localhost:3000/api/health
 Invoke-RestMethod http://localhost:3000/api/pets
+Invoke-RestMethod http://localhost:3000/api/pets/1
 ```
 
 Crear un tutor:
