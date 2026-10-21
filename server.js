@@ -52,6 +52,18 @@ app.get('/api/pets', asyncRoute(async (req, res) => {
   );
   res.json(rows);
 }));
+app.get('/api/pets/:id', asyncRoute(async (req, res) => {
+  const petId = Number(req.params.id);
+  if (!Number.isInteger(petId) || petId < 1) return res.status(400).json({ error: 'id de mascota inválido' });
+  const { rows } = await pool.query(
+    `SELECT p.*, o.name AS owner_name, o.phone AS owner_phone
+     FROM pets p JOIN owners o ON o.id = p.owner_id
+     WHERE p.id = $1`, [petId],
+  );
+  if (!rows.length) return res.status(404).json({ error: 'Mascota no encontrada' });
+  res.json(rows[0]);
+}));
+
 
 app.post('/api/pets', asyncRoute(async (req, res) => {
   const missing = required(req.body, ['owner_id', 'name', 'species']);
